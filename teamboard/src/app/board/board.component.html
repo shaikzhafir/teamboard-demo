@@ -1,0 +1,61 @@
+
+<div style="margin: auto; text-align: center;">
+
+
+<form [formGroup]="boardForm" (ngSubmit)="onSubmit()">
+    <p>Team Board <button type="submit">Update</button></p>
+    <div cdkDropListGroup>
+    <div class="example-container">
+      <h2>To do</h2>
+      <div class="example-box"><button type="button" (click)="addJob('todo')">Add Job</button></div>
+      <div
+        cdkDropList
+        [cdkDropListData]="boardForm.get('todo')['controls']"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of boardForm.get('todo')['controls']; index as index" cdkDrag>
+          <button style="float : right" (click)="deleteControl('todo',index)">X</button><br><br>
+          <div [formGroup]="item">
+              <input type="text" formControlName="job">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="example-container">
+      <h2>Doing</h2>
+      <div class="example-box"><button type="button" (click)="addJob('doing')">Add Job</button></div>
+      <div
+        cdkDropList
+        [cdkDropListData]="boardForm.get('doing')['controls']"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of boardForm.get('doing')['controls']; index as index" cdkDrag>
+          <button style="float : right" (click)="deleteControl('doing',index)">X</button><br><br>
+          <div [formGroup]="item">
+            <input type="text" formControlName="job">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="example-container">
+        <h2>Done</h2>
+        <div class="example-box"><button type="button" (click)="addJob('done')">Add Job</button></div>
+        <div
+          cdkDropList
+          [cdkDropListData]="boardForm.get('done')['controls']"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let item of boardForm.get('done')['controls']; index as index" cdkDrag>
+            <button style="float : right" (click)="deleteControl('done',index)">X</button><br><br>
+            <div [formGroup]="item">
+              <input type="text" formControlName="job">
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</form>
+
+</div>
