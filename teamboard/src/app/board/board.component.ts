@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {FormBuilder, FormArray} from '@angular/forms';
+import {moveItemInFormArray,transferItemInFormArray} from './move-item-helper'
 
 @Component({
   selector: 'app-board',
@@ -16,7 +17,8 @@ export class BoardComponent implements OnInit {
     doing : [],
     done : []
   }
-
+  currentFormArray : FormArray
+  previousFormArray : FormArray
   constructor(private fb : FormBuilder) {
     this.boardForm = this.fb.group({
       todo : this.fb.array([
@@ -153,16 +155,75 @@ export class BoardComponent implements OnInit {
 
 
   drop(event: CdkDragDrop<string[]>) {
-    console.log(event);
+    console.log(event.container.data);
     //update index of formgroup?
     
+    //find the current event container array
+    let currentBoard = event.container.id
+    switch(currentBoard){
+      case "todo":
+        this.currentFormArray = this.todo
+        break
+      case "doing":
+        this.currentFormArray = this.doing
+        break
+      case "done":
+        this.currentFormArray = this.done
+        break
+      default:
+        break
+    }
+    
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInFormArray(this.currentFormArray, event.previousIndex, event.currentIndex);
+      console.log(this.boardForm);
+      
     } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
+
+      let previousBoard = event.previousContainer.id
+      switch(previousBoard){
+        case "todo":
+          this.previousFormArray = this.todo
+          break
+        case "doing":
+          this.previousFormArray = this.doing
+          break
+        case "done":
+          this.previousFormArray = this.done
+          break
+        default:
+          break
+      }
+
+      switch(currentBoard){
+          case "todo":
+            this.currentFormArray = this.todo
+            break
+          case "doing":
+            this.currentFormArray = this.doing
+            break
+          case "done":
+            this.currentFormArray = this.done
+            break
+          default:
+            break
+        
+      }
+
+      transferItemInFormArray(this.previousFormArray,
+                        this.currentFormArray,
                         event.previousIndex,
                         event.currentIndex);
+      
+        console.log(this.boardForm);
+        
+      
+      //remove formgroup from previous board at previousIndex
+      
+
+      //add formgroup to current board at the currentIndex
+
+
       
     }
 

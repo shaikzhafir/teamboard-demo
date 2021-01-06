@@ -4,12 +4,14 @@
 
 <form [formGroup]="boardForm" (ngSubmit)="onSubmit()">
     <p>Team Board <button type="submit">Update</button></p>
+    <!-- drop list group will link all div inside with cdkDropList -->
     <div cdkDropListGroup>
     <div class="example-container">
       <h2>To do</h2>
       <div class="example-box"><button type="button" (click)="addJob('todo')">Add Job</button></div>
       <div
         cdkDropList
+        id="todo"
         [cdkDropListData]="boardForm.get('todo')['controls']"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
@@ -27,6 +29,7 @@
       <div class="example-box"><button type="button" (click)="addJob('doing')">Add Job</button></div>
       <div
         cdkDropList
+        id="doing"
         [cdkDropListData]="boardForm.get('doing')['controls']"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
@@ -44,6 +47,7 @@
         <div class="example-box"><button type="button" (click)="addJob('done')">Add Job</button></div>
         <div
           cdkDropList
+          id="done"
           [cdkDropListData]="boardForm.get('done')['controls']"
           class="example-list"
           (cdkDropListDropped)="drop($event)">
