@@ -1,14 +1,19 @@
 
-<div style="margin: auto; text-align: center;">
 
+  
+    
+  
 
 <form [formGroup]="boardForm" (ngSubmit)="onSubmit()">
-    <p>Team Board <button type="submit">Update</button></p>
+  
+  <div style="margin: auto; text-align: center; justify-content: center; align-items: center;">    
+    <div>
+    <button type="submit">Update</button>  
+    </div>
     <!-- drop list group will link all div inside with cdkDropList -->
-    <div cdkDropListGroup>
+    <div cdkDropListGroup >
     <div class="example-container">
       <h2>To do</h2>
-      <div class="top-box"><button type="button" (click)="addJob('todo')">Add Job</button></div>
       <div
         cdkDropList
         id="todo"
@@ -16,19 +21,20 @@
         class="example-list"
         (cdkDropListDropped)="drop($event)">
         <div class="example-box" *ngFor="let item of boardForm.get('todo')['controls']; index as index" cdkDrag>
-          <button style="float : right" (click)="deleteControl('todo',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
+          <button mat-button color="warn" style="float : right" (click)="deleteControl('todo',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
           <div [formGroup]="item">
             <mat-form-field class="example-form-field">
               <input matInput formControlName="job">
             </mat-form-field>
           </div>
+          <br>
         </div>
+        <div class="top-box"><button mat-stroked-button color="primary" type="button" (click)="addJob('todo')">+ Add Job</button></div>
       </div>
     </div>
   
     <div class="example-container">
       <h2>Doing</h2>
-      <div class="top-box"><button type="button" (click)="addJob('doing')">Add Job</button></div>
       <div
         cdkDropList
         id="doing"
@@ -36,17 +42,19 @@
         class="example-list"
         (cdkDropListDropped)="drop($event)">
         <div class="example-box" *ngFor="let item of boardForm.get('doing')['controls']; index as index" cdkDrag>
-          <button style="float : right" (click)="deleteControl('doing',index)">X</button><br><br>
+          <button mat-button color="warn" style="float : right" (click)="deleteControl('doing',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
           <div [formGroup]="item">
-            <input matInput type="text" formControlName="job">
+            <mat-form-field class="example-form-field">
+              <input matInput formControlName="job">
+            </mat-form-field>
           </div>
         </div>
+        <div class="top-box"><button  mat-stroked-button color="primary" type="button" (click)="addJob('doing')">Add Job</button></div>
       </div>
     </div>
 
     <div class="example-container">
         <h2>Done</h2>
-        <div class="top-box"><button type="button" (click)="addJob('done')">Add Job</button></div>
         <div
           cdkDropList
           id="done"
@@ -54,14 +62,17 @@
           class="example-list"
           (cdkDropListDropped)="drop($event)">
           <div class="example-box" *ngFor="let item of boardForm.get('done')['controls']; index as index" cdkDrag>
-            <button style="float : right" (click)="deleteControl('done',index)">X</button><br><br>
+            <button mat-button color="warn" style="float : right" (click)="deleteControl('done',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
             <div [formGroup]="item">
-              <input matInput type="text" formControlName="job">
+              <mat-form-field class="example-form-field">
+                <input matInput formControlName="job">
+              </mat-form-field>
             </div>
           </div>
+          <div class="top-box"><button  mat-stroked-button color="primary" type="button" (click)="addJob('done')">Add Job</button></div>
         </div>
       </div>
   </div>
+</div>
 </form>
 
-</div>

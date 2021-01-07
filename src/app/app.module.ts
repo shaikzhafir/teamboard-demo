@@ -10,7 +10,7 @@ import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
+import {MatButtonModule} from '@angular/material/button'; 
 
 
 @NgModule({
@@ -26,7 +26,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
