@@ -8,7 +8,7 @@
     <div cdkDropListGroup>
     <div class="example-container">
       <h2>To do</h2>
-      <div class="example-box"><button type="button" (click)="addJob('todo')">Add Job</button></div>
+      <div class="top-box"><button type="button" (click)="addJob('todo')">Add Job</button></div>
       <div
         cdkDropList
         id="todo"
@@ -16,9 +16,11 @@
         class="example-list"
         (cdkDropListDropped)="drop($event)">
         <div class="example-box" *ngFor="let item of boardForm.get('todo')['controls']; index as index" cdkDrag>
-          <button style="float : right" (click)="deleteControl('todo',index)">X</button><br><br>
+          <button style="float : right" (click)="deleteControl('todo',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
           <div [formGroup]="item">
-              <input type="text" formControlName="job">
+            <mat-form-field class="example-form-field">
+              <input matInput formControlName="job">
+            </mat-form-field>
           </div>
         </div>
       </div>
@@ -26,7 +28,7 @@
   
     <div class="example-container">
       <h2>Doing</h2>
-      <div class="example-box"><button type="button" (click)="addJob('doing')">Add Job</button></div>
+      <div class="top-box"><button type="button" (click)="addJob('doing')">Add Job</button></div>
       <div
         cdkDropList
         id="doing"
@@ -36,7 +38,7 @@
         <div class="example-box" *ngFor="let item of boardForm.get('doing')['controls']; index as index" cdkDrag>
           <button style="float : right" (click)="deleteControl('doing',index)">X</button><br><br>
           <div [formGroup]="item">
-            <input type="text" formControlName="job">
+            <input matInput type="text" formControlName="job">
           </div>
         </div>
       </div>
@@ -44,7 +46,7 @@
 
     <div class="example-container">
         <h2>Done</h2>
-        <div class="example-box"><button type="button" (click)="addJob('done')">Add Job</button></div>
+        <div class="top-box"><button type="button" (click)="addJob('done')">Add Job</button></div>
         <div
           cdkDropList
           id="done"
@@ -54,7 +56,7 @@
           <div class="example-box" *ngFor="let item of boardForm.get('done')['controls']; index as index" cdkDrag>
             <button style="float : right" (click)="deleteControl('done',index)">X</button><br><br>
             <div [formGroup]="item">
-              <input type="text" formControlName="job">
+              <input matInput type="text" formControlName="job">
             </div>
           </div>
         </div>

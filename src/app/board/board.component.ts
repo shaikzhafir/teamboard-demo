@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {FormBuilder, FormArray} from '@angular/forms';
-import {moveItemInFormArray,transferItemInFormArray} from './move-item-helper'
+import {moveItemInFormArray,transferItemInFormArray} from './move-item-helper';
+import {faTimesCircle} from '@fortawesome/free-solid-svg-icons'
 
 @Component({
   selector: 'app-board',
@@ -11,6 +12,7 @@ import {moveItemInFormArray,transferItemInFormArray} from './move-item-helper'
 
 
 export class BoardComponent implements OnInit {
+  faTimesCircle = faTimesCircle
   boardForm: any;
   boardData : {
     todo : [],
