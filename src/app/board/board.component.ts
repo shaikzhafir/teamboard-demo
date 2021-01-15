@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   CdkDragDrop,
+  CdkDragStart,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
@@ -11,6 +12,11 @@ import {
 } from './move-item-helper';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-board',
@@ -21,6 +27,10 @@ export class BoardComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   boardForm: any;
   boardString: string;
+  jobDetails : string;
+  jobOwner : string;
+  jobBoard : string;
+
   boardData: {
     todo: [];
     doing: [];
@@ -28,7 +38,8 @@ export class BoardComponent implements OnInit {
   };
   currentFormArray: FormArray;
   previousFormArray: FormArray;
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar) {
+  dragging : boolean;
+  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, public dialog : MatDialog) {
     this.boardForm = this.fb.group({
       todo: this.fb.array([]),
 
@@ -71,6 +82,45 @@ export class BoardComponent implements OnInit {
         done: [],
       };
     }
+  }
+
+  handleDragStart(event : CdkDragStart): void{
+    this.dragging = true
+  }
+
+  handleClick(event: MouseEvent,item,index):void{
+    if (this.dragging){
+      this.dragging = false
+      return
+    }
+
+    this.openDialog(item,index)
+
+   
+
+    
+  }
+
+  openDialog(item,index){
+    this.jobOwner = ""
+    this.jobDetails = ""
+    this.jobBoard = "";
+    const dialogRef = this.dialog.open(DialogItem, {
+      width : '250px',
+      data : 
+      {jobDetails : this.jobDetails,
+       jobBoard : this.jobBoard,
+       jobOwner : this.jobOwner}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      console.log(item.value);
+      item.setValue({job : result.jobDetails})
+      /* item.setValue(this.fb.group({
+        job: this.fb.control('booop'),
+      })) */
+      
+    })
   }
 
   openSnackBar(message: string, action: string) {
@@ -143,6 +193,10 @@ export class BoardComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  editJob(boardType: String, index: number){
+
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -219,3 +273,24 @@ export class BoardComponent implements OnInit {
     }
   }
 }
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: './dialog.html',
+  styleUrls: ['./board.component.scss'],
+})
+export class DialogItem {
+  constructor(
+    public dialogRef: MatDialogRef<DialogItem>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    
+  }
+  
+  onNoClick(): void {
+    console.log(this.dialogRef);
+
+    this.dialogRef.close();
+  }
+}
+
