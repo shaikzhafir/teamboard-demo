@@ -18,12 +18,12 @@
       <div
         cdkDropList
         id="todo"
-        [cdkDropListData]="boardForm.get('todo')['controls']"
+        [cdkDropListData]="todo['controls']"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of boardForm.get('todo')['controls']; index as index" 
+        <div class="example-box" *ngFor="let item of todo['controls']; index as index" 
         cdkDrag
-        (click)="handleClick($event,item,index)"
+        (click)="handleClick($event,item,index,'todo')"
         (cdkDragStarted)="handleDragStart($event)"
         >
           <button mat-button color="warn" style="float : right" (click)="deleteControl('todo',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
@@ -42,12 +42,12 @@
       <div
         cdkDropList
         id="doing"
-        [cdkDropListData]="boardForm.get('doing')['controls']"
+        [cdkDropListData]="doing['controls']"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of boardForm.get('doing')['controls']; index as index" 
+        <div class="example-box" *ngFor="let item of doing['controls']; index as index" 
         cdkDrag
-        (click)="handleClick($event,item)"
+        (click)="handleClick($event,item,index,'doing')"
         (cdkDragStarted)="handleDragStart($event)">
           <button mat-button color="warn" style="float : right" (click)="deleteControl('doing',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
           <div [formGroup]="item" style="text-align: center;">
@@ -65,12 +65,12 @@
         <div
           cdkDropList
           id="done"
-          [cdkDropListData]="boardForm.get('done')['controls']"
+          [cdkDropListData]="done['controls']"
           class="example-list"
           (cdkDropListDropped)="drop($event)">
-          <div class="example-box" *ngFor="let item of boardForm.get('done')['controls']; index as index" 
+          <div class="example-box" *ngFor="let item of done['controls']; index as index" 
           cdkDrag
-          (click)="handleClick($event,item)"
+          (click)="handleClick($event,item,index,'done')"
           (cdkDragStarted)="handleDragStart($event)">
             <button mat-button color="warn" style="float : right" (click)="deleteControl('done',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
             <div [formGroup]="item" style="text-align: center;">

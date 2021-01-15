@@ -10,6 +10,7 @@ import {
   moveItemInFormArray,
   transferItemInFormArray,
 } from './move-item-helper';
+
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
@@ -17,6 +18,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { boardSwitchy } from './helper';
 
 @Component({
   selector: 'app-board',
@@ -30,6 +32,7 @@ export class BoardComponent implements OnInit {
   jobDetails : string;
   jobOwner : string;
   jobBoard : string;
+  testing : string;
 
   boardData: {
     todo: [];
@@ -57,7 +60,9 @@ export class BoardComponent implements OnInit {
         switch (boardType) {
           case 'todo':
             storedBoard[boardType].forEach((job) => {
-              this.todo.push(this.fb.group({ job: this.fb.control(job.job) }));
+              this.todo.push(this.fb.group({ 
+                job: this.fb.control(job.job),
+                testing : this.fb.control('lalala')}));
             });
 
             break;
@@ -75,6 +80,8 @@ export class BoardComponent implements OnInit {
             break;
         }
       }
+      console.log(storedBoard);
+      
     } else {
       this.boardData = {
         todo: [],
@@ -88,38 +95,38 @@ export class BoardComponent implements OnInit {
     this.dragging = true
   }
 
-  handleClick(event: MouseEvent,item,index):void{
+  handleClick(event: MouseEvent,item,index,boardType):void{
     if (this.dragging){
       this.dragging = false
       return
     }
 
-    this.openDialog(item,index)
+    this.openDialog(item,index,boardType)
 
    
 
     
   }
 
-  openDialog(item,index){
+  openDialog(item,index,boardType){
     this.jobOwner = ""
     this.jobDetails = ""
     this.jobBoard = "";
     const dialogRef = this.dialog.open(DialogItem, {
-      width : '250px',
+      width : '500px',
       data : 
       {jobDetails : this.jobDetails,
        jobBoard : this.jobBoard,
        jobOwner : this.jobOwner}
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      console.log(item.value);
-      item.setValue({job : result.jobDetails})
-      /* item.setValue(this.fb.group({
-        job: this.fb.control('booop'),
-      })) */
+      if (result){
+      item.setValue({job : result.jobDetails,
+        testing : 'fuck la'})
       
+      
+      //array.push({owner : result.jobOwner})
+      }
     })
   }
 
@@ -129,6 +136,8 @@ export class BoardComponent implements OnInit {
     });
   }
 
+
+  //can just use this.todo to call
   get todo() {
     return this.boardForm.get('todo') as FormArray;
   }
@@ -144,7 +153,6 @@ export class BoardComponent implements OnInit {
     /* for (const boardType in this.boardForm.value){
       this.boardData[boardType] = this.boardForm.value[boardType]
     } */
-
     //console.log(this.boardData);
     this.boardString = JSON.stringify(this.boardForm.value);
     localStorage.setItem('board', JSON.stringify(this.boardForm.value));
