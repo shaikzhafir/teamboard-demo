@@ -29,7 +29,7 @@
           <button mat-button color="warn" style="float : right" (click)="deleteControl('todo',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
           <div [formGroup]="item" style="text-align: center;">
             <mat-form-field class="example-form-field" appearance="outline">
-              <input matInput formControlName="job">
+              <input matInput formControlName="jobDetails">
             </mat-form-field>
           </div>
         </div>
@@ -52,7 +52,7 @@
           <button mat-button color="warn" style="float : right" (click)="deleteControl('doing',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
           <div [formGroup]="item" style="text-align: center;">
             <mat-form-field class="example-form-field" appearance="outline">
-              <input matInput formControlName="job">
+              <input matInput formControlName="jobDetails">
             </mat-form-field>
           </div>
         </div>
@@ -75,7 +75,7 @@
             <button mat-button color="warn" style="float : right" (click)="deleteControl('done',index)"><fa-icon [icon]="faTimesCircle"></fa-icon></button><br><br>
             <div [formGroup]="item" style="text-align: center;">
               <mat-form-field class="example-form-field" appearance="outline">
-                <input matInput formControlName="job">
+                <input matInput formControlName="jobDetails">
               </mat-form-field>
             </div>
           </div>

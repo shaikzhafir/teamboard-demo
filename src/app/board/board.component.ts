@@ -5,7 +5,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { FormBuilder, FormArray } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
 import {
   moveItemInFormArray,
   transferItemInFormArray,
@@ -29,10 +29,10 @@ export class BoardComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   boardForm: any;
   boardString: string;
-  jobDetails : string;
-  jobOwner : string;
-  jobBoard : string;
-  testing : string;
+  jobDetails: string;
+  jobOwner: string;
+  jobBoard: string;
+  testing: string;
 
   boardData: {
     todo: [];
@@ -41,8 +41,12 @@ export class BoardComponent implements OnInit {
   };
   currentFormArray: FormArray;
   previousFormArray: FormArray;
-  dragging : boolean;
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, public dialog : MatDialog) {
+  dragging: boolean;
+  constructor(
+    private fb: FormBuilder,
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
+  ) {
     this.boardForm = this.fb.group({
       todo: this.fb.array([]),
 
@@ -60,20 +64,36 @@ export class BoardComponent implements OnInit {
         switch (boardType) {
           case 'todo':
             storedBoard[boardType].forEach((job) => {
-              this.todo.push(this.fb.group({ 
-                job: this.fb.control(job.job),
-                testing : this.fb.control('lalala')}));
+              this.todo.push(
+                this.fb.group({
+                  jobDetails: this.fb.control(job.jobDetails),
+                  jobBoard: this.fb.control(boardType),
+                  jobOwner : this.fb.control(job.jobOwner)
+                })
+              );
             });
 
             break;
           case 'doing':
             storedBoard[boardType].forEach((job) => {
-              this.doing.push(this.fb.group({ job: this.fb.control(job.job) }));
+              this.doing.push(
+                this.fb.group({ 
+                  jobDetails: this.fb.control(job.jobDetails),
+                  jobBoard: this.fb.control(boardType),
+                  jobOwner : this.fb.control(job.jobOwner) 
+                })
+              );
             });
             break;
           case 'done':
             storedBoard[boardType].forEach((job) => {
-              this.done.push(this.fb.group({ job: this.fb.control(job.job) }));
+              this.done.push(
+                this.fb.group({ 
+                  jobDetails: this.fb.control(job.jobDetails), 
+                  jobBoard: this.fb.control(boardType),
+                  jobOwner : this.fb.control(job.jobOwner)
+                })
+              );
             });
             break;
           default:
@@ -81,7 +101,6 @@ export class BoardComponent implements OnInit {
         }
       }
       console.log(storedBoard);
-      
     } else {
       this.boardData = {
         todo: [],
@@ -91,43 +110,43 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  handleDragStart(event : CdkDragStart): void{
-    this.dragging = true
+  handleDragStart(event: CdkDragStart): void {
+    this.dragging = true;
   }
 
-  handleClick(event: MouseEvent,item,index,boardType):void{
-    if (this.dragging){
-      this.dragging = false
-      return
+  handleClick(event: MouseEvent, item, index, boardType): void {
+    if (this.dragging) {
+      this.dragging = false;
+      return;
     }
 
-    this.openDialog(item,index,boardType)
-
-   
-
-    
+    this.openDialog(item, index, boardType);
   }
 
-  openDialog(item,index,boardType){
-    this.jobOwner = ""
-    this.jobDetails = ""
-    this.jobBoard = "";
+  openDialog(item, index, boardType) {
+    console.log(item);
+    this.jobOwner = item.value.jobOwner;
+    this.jobDetails = item.value.jobDetails;
+    this.jobBoard = boardType;
     const dialogRef = this.dialog.open(DialogItem, {
-      width : '500px',
-      data : 
-      {jobDetails : this.jobDetails,
-       jobBoard : this.jobBoard,
-       jobOwner : this.jobOwner}
+      width: '500px',
+      data: {
+        jobDetails: this.jobDetails,
+        jobBoard: this.jobBoard,
+        jobOwner: this.jobOwner,
+      },
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result){
-      item.setValue({job : result.jobDetails,
-        testing : 'fuck la'})
-      
-      
-      //array.push({owner : result.jobOwner})
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        item.setValue(
+          { jobDetails: result.value.jobDetails, 
+            jobOwner: result.value.jobOwner,
+            jobBoard : boardType });
+
+        //array.push({owner : result.jobOwner})
       }
-    })
+    });
   }
 
   openSnackBar(message: string, action: string) {
@@ -135,7 +154,6 @@ export class BoardComponent implements OnInit {
       duration: 2000,
     });
   }
-
 
   //can just use this.todo to call
   get todo() {
@@ -180,21 +198,28 @@ export class BoardComponent implements OnInit {
       case 'todo':
         this.todo.push(
           this.fb.group({
-            job: this.fb.control(''),
+            jobDetails: this.fb.control(''),
+            jobBoard : this.fb.control(jobType),
+            jobOwner : this.fb.control('')
+
           })
         );
         break;
       case 'doing':
         this.doing.push(
           this.fb.group({
-            job: this.fb.control(''),
+            jobDetails: this.fb.control(''),
+            jobBoard : this.fb.control(jobType),
+            jobOwner : this.fb.control('')
           })
         );
         break;
       case 'done':
         this.done.push(
           this.fb.group({
-            job: this.fb.control(''),
+            jobDetails: this.fb.control(''),
+            jobBoard : this.fb.control(jobType),
+            jobOwner : this.fb.control('')
           })
         );
         break;
@@ -203,9 +228,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  editJob(boardType: String, index: number){
-
-  }
+  editJob(boardType: String, index: number) {}
 
   drop(event: CdkDragDrop<string[]>) {
     console.log(event.container.data);
@@ -235,8 +258,6 @@ export class BoardComponent implements OnInit {
       );
       console.log(this.boardForm);
     } else {
-      
-      
       let previousBoard = event.previousContainer.id;
       switch (previousBoard) {
         case 'todo':
@@ -288,17 +309,35 @@ export class BoardComponent implements OnInit {
   styleUrls: ['./board.component.scss'],
 })
 export class DialogItem {
+  dialogForm : FormGroup
   constructor(
     public dialogRef: MatDialogRef<DialogItem>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private fb: FormBuilder,
   ) {
-    
+    this.dialogForm = this.fb.group({
+      jobDetails : [data.jobDetails,Validators.required],
+      jobBoard : [{value : data.jobBoard, disabled : true},Validators.required],
+      jobOwner : [data.jobOwner,Validators.required]
+    })
+
   }
+
   
+  save(){
+    if (this.dialogForm.valid){
+      console.log(this.dialogForm);
+      this.dialogRef.close(this.dialogForm);
+    }
+
+    else {
+      alert(this.dialogForm.valid)
+    }
+  }
+
   onNoClick(): void {
     console.log(this.dialogRef);
 
     this.dialogRef.close();
   }
 }
-

@@ -1,17 +1,22 @@
 <h1 mat-dialog-title>tbbbbb</h1>
-<div mat-dialog-content>
+<div mat-dialog-content [formGroup]="dialogForm">
     <mat-form-field>
-        <input matInput type="text" [(ngModel)]="data.jobDetails"><br>
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput type="text" [(ngModel)]="data.jobBoard"><br>
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput type="text" [(ngModel)]="data.jobOwner"><br>
+        <input matInput type="text"  formControlName="jobDetails" required>
     </mat-form-field>
     <br>
+    <mat-form-field>
+        <input matInput type="text"  formControlName="jobOwner" required>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <input matInput type="text"  formControlName="jobBoard" required>
+    </mat-form-field>
+    
+    
+    <br>
     <div mat-dialog-actions>
-        <button mat-button [mat-dialog-close]="data">Save</button>
+        <button mat-button (click)=save()>Save</button>
+        <!-- <button mat-button [mat-dialog-close]="data">Save</button> -->
     </div>
 
 </div>
